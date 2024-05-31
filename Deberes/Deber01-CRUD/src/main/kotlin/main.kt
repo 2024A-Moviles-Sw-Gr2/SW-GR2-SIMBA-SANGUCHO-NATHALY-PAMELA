@@ -3,22 +3,18 @@ import java.util.*
 
 fun main() {
     var opcion = 0
-    val scanner = Scanner(System.`in`)
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-    val pastelerias = mutableListOf<Pasteleria>()
-    val pasteles = mutableListOf<Pastel>()
 
     while (opcion < 9) {
         opcion = menu()
 
         when (opcion) {
             1 -> {
-                val pasteleria = Pasteleria.ingresarDatosPasteleria()
-                Pasteleria.crearPasteleria(pasteleria)
+                val nuevaPasteleria = Pasteleria.ingresarDatosPasteleria()
+                Pasteleria.crearPasteleria(nuevaPasteleria)
             }
             2 -> {
-                val pastel = Pastel.ingresarDatosPastel()
-                Pastel.crearPastel(pastel, pastel.nombrePasteleria)
+                val nuevoPastel = Pastel.ingresarDatosPastel()
+                Pastel.crearPastel(nuevoPastel, nuevoPastel.nombrePasteleria)
             }
             3 -> {
                 Pasteleria.leerPasteleria().forEach { pasteleria ->
@@ -44,12 +40,10 @@ fun main() {
                 Pastel.actualizarPastel(nombrePastel, nuevoPastel)
             }
             7 -> {
-                val nombre = Pasteleria.modificarPorNombre()
-                Pasteleria.eliminarPasteleria(nombre)
+                Pasteleria.eliminarPasteleria(Pasteleria.modificarPorNombre())
             }
             8 -> {
-                val nombrePastel = Pastel.modificarPorNombre()
-                Pastel.eliminarPastel(nombrePastel)
+                Pastel.eliminarPastel(Pastel.modificarPorNombre())
             }
             9 -> {
                 println("Saliendo del programa...")

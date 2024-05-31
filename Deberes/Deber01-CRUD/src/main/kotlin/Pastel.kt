@@ -33,7 +33,7 @@ data class Pastel(
                 fechaFabricacion = try {
                     dateFormat.parse(fechaInput)
                 } catch (e: Exception) {
-                    println("Formato de fecha incorrecto:")
+                    println("Ingreso un formato incorrecto")
                     continue
                 }
                 break
@@ -46,7 +46,7 @@ data class Pastel(
                 numPasteles = try {
                     numPastelesInput.toInt()
                 } catch (e: Exception) {
-                    println("Por favor, ingrese un número entero válido.")
+                    println("Por favor, ingrese un numero entero")
                     continue
                 }
                 break
@@ -75,7 +75,7 @@ data class Pastel(
                     precio = precioInput.toDouble()
                     break
                 } else {
-                    println("Por favor, ingrese un número decimal válido.")
+                    println("Por favor, ingrese un numero decimal")
                 }
             }
 
