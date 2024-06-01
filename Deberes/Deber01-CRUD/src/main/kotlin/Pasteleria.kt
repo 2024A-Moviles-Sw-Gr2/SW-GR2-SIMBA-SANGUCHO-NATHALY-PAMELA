@@ -81,7 +81,7 @@ data class Pasteleria(
         }
 
         fun crearPasteleria(pasteleria: Pasteleria) {
-            pasteleriaArchivo.appendText("${pasteleria.nombrePasteleria},${dateFormat.format(pasteleria.fechaApertura)}," +
+            pasteleriaArchivo.appendText("\n${pasteleria.nombrePasteleria},${dateFormat.format(pasteleria.fechaApertura)}," +
                     "${pasteleria.entregaADomicilio},${pasteleria.numEmpleados},${pasteleria.ingresos}\n")
         }
 
@@ -123,7 +123,7 @@ data class Pasteleria(
                 pastelerias[index] = nuevoNombrePasteleria
                 pasteleriaArchivo.writeText(pastelerias.joinToString("\n") {
                     "${it.nombrePasteleria},${dateFormat.format(it.fechaApertura)}," +
-                            "${it.entregaADomicilio},${it.numEmpleados},${it.ingresos}"
+                            "${it.entregaADomicilio},${it.numEmpleados},${it.ingresos} \n"
                 })
             }
         }

@@ -4,12 +4,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 data class Pastel(
-    val nombre: String,
-    val nombrePasteleria: String,
-    val fechaFabricacion: Date,
-    val numPasteles: Int,
-    val aptoDiabeticos: Boolean,
-    val precio: Double
+    var nombre: String,
+    var nombrePasteleria: String,
+    var fechaFabricacion: Date,
+    var numPasteles: Int,
+    var aptoDiabeticos: Boolean,
+    var precio: Double
 ) {
     companion object {
         private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -126,26 +126,17 @@ data class Pastel(
             val pasteles = leerPasteles().toMutableList()
             val index = pasteles.indexOfFirst { it.nombre == nombrePastel }
             if (index != -1) {
-                val pastelActualizado = nuevoNombrePastel.copy(nombre = nombrePastel)
-                pasteles[index] = pastelActualizado
-                pastelesArchivo.writeText(pasteles.joinToString("\n") {
-                    "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
-                            "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
-                })
-
-                val pastelerias = leerPasteleria().toMutableList()
-                val indexPasteleria = pastelerias.indexOfFirst { it.nombrePasteleria == nuevoNombrePastel.nombrePasteleria }
-                if (indexPasteleria != -1) {
-                    val pasteleriaActualizada = pastelerias[indexPasteleria].copy(nombrePasteleria = nuevoNombrePastel.nombrePasteleria)
-                    pastelerias[indexPasteleria] = pasteleriaActualizada
-                    // Guardar los cambios en el archivo de pastelerías
-                    Pasteleria.guardarPasteleria(pastelerias)
+                pasteles[index] = nuevoNombrePastel
+                pastelesArchivo.bufferedWriter().use { writer ->
+                    pasteles.forEach { pastel ->
+                        writer.write("${pastel.nombre},${pastel.nombrePasteleria},${pastel.fechaFabricacion.time}," +
+                                "${pastel.numPasteles},${pastel.aptoDiabeticos},${pastel.precio}\n")
+                    }
                 }
             } else {
-                println("No se encontró el pastel llamado '$nombrePastel'.")
+                println("No se encontró el pastel con nombre '$nombrePastel'.")
             }
         }
-
         fun eliminarPastel(nombrePastel: String) {
             val pasteles = leerPasteles().filterNot { it.nombre == nombrePastel }
             pastelesArchivo.writeText(pasteles.joinToString("\n") {

@@ -1,6 +1,3 @@
-import java.text.SimpleDateFormat
-import java.util.*
-
 fun main() {
     var opcion = 0
 
@@ -35,15 +32,17 @@ fun main() {
                 Pasteleria.actualizarPasteleria(nombre, nuevaPasteleria)
             }
             6 -> {
-                val nombrePastel = Pasteleria.modificarPorNombre()
+                val nombrePastel = Pastel.modificarPorNombre()
                 val nuevoPastel = Pastel.ingresarDatosPastel()
                 Pastel.actualizarPastel(nombrePastel, nuevoPastel)
             }
             7 -> {
-                Pasteleria.eliminarPasteleria(Pasteleria.modificarPorNombre())
+                val eliminar = Pasteleria.modificarPorNombre()
+                Pasteleria.eliminarPasteleria(eliminar)
             }
             8 -> {
-                Pastel.eliminarPastel(Pastel.modificarPorNombre())
+                val eliminar =Pastel.modificarPorNombre()
+                Pastel.eliminarPastel(eliminar)
             }
             9 -> {
                 println("Saliendo del programa...")
