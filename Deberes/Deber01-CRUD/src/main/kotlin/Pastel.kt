@@ -13,7 +13,7 @@ data class Pastel(
 ) {
     companion object {
         private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        private val pastelesArchivo = File("src/main/resources/pastel.txt")
+        val pastelesArchivo = File("src/main/resources/pastel.txt")
 
         init {
             if (!pastelesArchivo.exists()) pastelesArchivo.createNewFile()
@@ -137,31 +137,46 @@ data class Pastel(
                 println("No se encontró el pastel con nombre '$nombrePastel'.")
             }
         }
-        fun eliminarPastel(nombrePastel: String) {
-            val pasteles = leerPasteles().filterNot { it.nombre == nombrePastel }
+
+        fun eliminarPastel(nombre: String) {
+            val pasteles = leerPasteles().filterNot { it.nombre == nombre }
             pastelesArchivo.writeText(pasteles.joinToString("\n") {
                 "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
                         "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
             })
+
+            println("¡Pastel '$nombre' eliminado exitosamente!")
+        }
+
+        fun eliminarPorNombrePasteleria(nombrePasteleria: String) {
+            val pasteles = leerPasteles().filterNot { it.nombrePasteleria == nombrePasteleria }
+            pastelesArchivo.writeText(pasteles.joinToString("\n") {
+                "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
+                        "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
+            })
+
+            println("¡Pasteles de la pastelería '$nombrePasteleria' eliminados exitosamente!")
         }
 
         fun modificarPorNombre(): String {
-            println("Ingrese nombre del pastel:")
+            println("Ingrese nombre del pastel a actualizar:")
+            return readLine().orEmpty()
+        }
+        fun eliminarPorNombre(): String {
+            println("Ingrese nombre del pastel a eliminar:")
             return readLine().orEmpty()
         }
 
-        fun actualizarNombrePasteleria(pastelerias: MutableList<Pasteleria>, nombreViejo: String, nombreNuevo: String) {
-            val pasteleriaActualizada = pastelerias.find { it.nombrePasteleria == nombreViejo }
-            if (pasteleriaActualizada != null) {
-                pasteleriaActualizada.nombrePasteleria = nombreNuevo
-                for (pastel in leerPasteles()) {
-                    if (pastel.nombrePasteleria == nombreViejo) {
-                        val nuevoPastel = pastel.copy(nombrePasteleria = nombreNuevo)
-                        actualizarPastel(pastel.nombre, nuevoPastel)
-                    }
+        fun actualizarNombrePasteleria(pasteles: MutableList<Pastel>, nombreViejo: String, nombreNuevo: String) {
+            for (pastel in pasteles) {
+                if (pastel.nombrePasteleria == nombreViejo) {
+                    pastel.nombrePasteleria = nombreNuevo
+                    val nuevoPastel = pastel.copy(nombrePasteleria = nombreNuevo)
+                    actualizarPastel(pastel.nombre, nuevoPastel)
                 }
             }
         }
+
     }
     override fun toString(): String {
         return "Nombre: $nombre, Nombre de la Pastelería: $nombrePasteleria, " +

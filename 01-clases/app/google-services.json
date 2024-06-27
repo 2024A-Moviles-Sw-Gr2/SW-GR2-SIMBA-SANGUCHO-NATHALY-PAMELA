@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "135394760233",
+    "project_id": "npss-2024a-sw-gr2",
+    "storage_bucket": "npss-2024a-sw-gr2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135394760233:android:91677b05b481f4a40e6e38",
+        "android_client_info": {
+          "package_name": "com.example.a2024swgr2snp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8Eii4CA8hdWWcgRywMzHHciTuYFSp5i4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135394760233:android:8503c32b9572b4bc0e6e38",
+        "android_client_info": {
+          "package_name": "com.example.a2024swgr2ssnp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8Eii4CA8hdWWcgRywMzHHciTuYFSp5i4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.a2024swgr2snp
+package com.example.a2024swgr2ssnp
 
 import org.junit.Test
 

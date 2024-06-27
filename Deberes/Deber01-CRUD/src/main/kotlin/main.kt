@@ -37,11 +37,11 @@ fun main() {
                 Pastel.actualizarPastel(nombrePastel, nuevoPastel)
             }
             7 -> {
-                val eliminar = Pasteleria.modificarPorNombre()
+                val eliminar = Pasteleria.eliminarPorNombre()
                 Pasteleria.eliminarPasteleria(eliminar)
             }
             8 -> {
-                val eliminar =Pastel.modificarPorNombre()
+                val eliminar =Pastel.eliminarPorNombre()
                 Pastel.eliminarPastel(eliminar)
             }
             9 -> {

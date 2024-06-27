@@ -1,3 +1,5 @@
+import Pastel.Companion.leerPasteles
+import Pastel.Companion.pastelesArchivo
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -83,6 +85,7 @@ data class Pasteleria(
         fun crearPasteleria(pasteleria: Pasteleria) {
             pasteleriaArchivo.appendText("\n${pasteleria.nombrePasteleria},${dateFormat.format(pasteleria.fechaApertura)}," +
                     "${pasteleria.entregaADomicilio},${pasteleria.numEmpleados},${pasteleria.ingresos}\n")
+
         }
 
         fun leerPasteleria(): List<Pasteleria> {
@@ -123,10 +126,18 @@ data class Pasteleria(
                 pastelerias[index] = nuevoNombrePasteleria
                 pasteleriaArchivo.writeText(pastelerias.joinToString("\n") {
                     "${it.nombrePasteleria},${dateFormat.format(it.fechaApertura)}," +
-                            "${it.entregaADomicilio},${it.numEmpleados},${it.ingresos} \n"
+                            "${it.entregaADomicilio},${it.numEmpleados},${it.ingresos}"
                 })
+
+                // Obtener los pasteles asociados a la pastelería actualizada
+                val pasteles = Pastel.leerPasteles().toMutableList()
+
+                // Actualizar nombre en los pasteles asociados
+                Pastel.actualizarNombrePasteleria(pasteles, nombrePasteleria, nuevoNombrePasteleria.nombrePasteleria)
             }
+            println("¡Pastelería '$nombrePasteleria' actualizada exitosamente a '${nuevoNombrePasteleria.nombrePasteleria}'!")
         }
+
 
         fun actualizarEnPasteles(nombrePasteleria: String, nuevaPasteleria: ArrayList<Pastel>) {
             val pastelerias = leerPasteleria().toMutableList()
@@ -143,14 +154,26 @@ data class Pasteleria(
 
         fun eliminarPasteleria(nombre: String) {
             val pastelerias = leerPasteleria().filterNot { it.nombrePasteleria == nombre }
+            val pastelesEliminados = leerPasteles().filterNot { it.nombrePasteleria == nombre }
+
             pasteleriaArchivo.writeText(pastelerias.joinToString("\n") {
                 "${it.nombrePasteleria},${dateFormat.format(it.fechaApertura)}," +
                         "${it.entregaADomicilio},${it.numEmpleados},${it.ingresos}"
             })
-        }
 
+            pastelesArchivo.writeText(pastelesEliminados.joinToString("\n") {
+                "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
+                        "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
+            })
+
+            println("¡Pastelería '$nombre' eliminada exitosamente junto con sus pasteles!")
+        }
         fun modificarPorNombre(): String {
-            println("Ingrese nombre de la pasteleria:")
+            println("Ingrese nombre de la pasteleria a actualizar:")
+            return readLine().orEmpty()
+        }
+        fun eliminarPorNombre(): String {
+            println("Ingrese nombre de la pasteleria a eliminar:")
             return readLine().orEmpty()
         }
         fun guardarPasteleria(pastelerias: List<Pasteleria>) {
