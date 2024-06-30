@@ -1,3 +1,4 @@
+import Pasteleria.Companion.actualizarEnPasteles
 import Pasteleria.Companion.leerPasteleria
 import java.io.File
 import java.text.SimpleDateFormat
@@ -17,69 +18,6 @@ data class Pastel(
 
         init {
             if (!pastelesArchivo.exists()) pastelesArchivo.createNewFile()
-        }
-
-        fun ingresarDatosPastel(): Pastel {
-            println("Ingrese el nombre del pastel:")
-            val nombre = readLine().orEmpty()
-
-            println("Ingrese nombre de la pasteleria:")
-            val nombrePasteleria = readLine().orEmpty()
-
-            val fechaFabricacion: Date
-            while (true) {
-                println("Ingrese la fecha de fabricacion (yyyy-MM-dd):")
-                val fechaInput = readLine().orEmpty()
-                fechaFabricacion = try {
-                    dateFormat.parse(fechaInput)
-                } catch (e: Exception) {
-                    println("Ingreso un formato incorrecto")
-                    continue
-                }
-                break
-            }
-
-            val numPasteles: Int
-            while (true) {
-                println("Cantidad de pasteles hechos:")
-                val numPastelesInput = readLine().orEmpty()
-                numPasteles = try {
-                    numPastelesInput.toInt()
-                } catch (e: Exception) {
-                    println("Por favor, ingrese un numero entero")
-                    continue
-                }
-                break
-            }
-
-            val aptoDiabeticos: Boolean
-            while (true) {
-                println("¿Es apto para diabéticos? (si/no):")
-                val aptoDiabeticosInput = readLine().orEmpty().toLowerCase()
-                aptoDiabeticos = when (aptoDiabeticosInput) {
-                    "si" -> true
-                    "no" -> false
-                    else -> {
-                        println("Por favor, ingrese 'si' o 'no'.")
-                        continue
-                    }
-                }
-                break
-            }
-
-            val precio: Double
-            while (true) {
-                println("Ingrese el precio:")
-                val precioInput = readLine()
-                if (precioInput != null && precioInput.matches(Regex("-?\\d+(\\.\\d+)?"))) {
-                    precio = precioInput.toDouble()
-                    break
-                } else {
-                    println("Por favor, ingrese un numero decimal")
-                }
-            }
-
-            return Pastel(nombre, nombrePasteleria, fechaFabricacion, numPasteles, aptoDiabeticos, precio)
         }
 
         fun leerPasteles(): List<Pastel> {
@@ -107,15 +45,16 @@ data class Pastel(
         }
 
         fun crearPastel(pastel: Pastel, nombrePasteleria: String) {
-            val pastelerias = Pasteleria.leerPasteleria().toMutableList()
+            val pastelerias = leerPasteleria().toMutableList()
             val pasteleria = pastelerias.find { it.nombrePasteleria == nombrePasteleria }
 
             if (pasteleria != null) {
-                pastelesArchivo.appendText("${pastel.nombre},${pastel.nombrePasteleria},${pastel.fechaFabricacion.time}," +
-                        "${pastel.numPasteles},${pastel.aptoDiabeticos},${pastel.precio}\n")
+                val linea = "${pastel.nombre},${pastel.nombrePasteleria},${pastel.fechaFabricacion.time}," +
+                        "${pastel.numPasteles},${pastel.aptoDiabeticos},${pastel.precio}\n"
+                pastelesArchivo.appendText(linea)
 
                 pasteleria.pasteles.add(pastel)
-                Pasteleria.actualizarEnPasteles(nombrePasteleria, pasteleria.pasteles)
+                actualizarEnPasteles(nombrePasteleria, pasteleria.pasteles)
                 println("Pastel creado exitosamente")
             } else {
                 println("No existe la pasteleria '$nombrePasteleria'.")
@@ -139,32 +78,20 @@ data class Pastel(
         }
 
         fun eliminarPastel(nombre: String) {
-            val pasteles = leerPasteles().filterNot { it.nombre == nombre }
-            pastelesArchivo.writeText(pasteles.joinToString("\n") {
-                "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
-                        "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
-            })
+            val pasteles = leerPasteles()
+            val pastelExiste = pasteles.any { it.nombre == nombre }
 
-            println("¡Pastel '$nombre' eliminado exitosamente!")
-        }
+            if (pastelExiste) {
+                val pastelesActualizados = pasteles.filterNot { it.nombre == nombre }
+                pastelesArchivo.writeText(pastelesActualizados.joinToString("\n") {
+                    "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
+                            "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
+                })
 
-        fun eliminarPorNombrePasteleria(nombrePasteleria: String) {
-            val pasteles = leerPasteles().filterNot { it.nombrePasteleria == nombrePasteleria }
-            pastelesArchivo.writeText(pasteles.joinToString("\n") {
-                "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
-                        "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
-            })
-
-            println("¡Pasteles de la pastelería '$nombrePasteleria' eliminados exitosamente!")
-        }
-
-        fun modificarPorNombre(): String {
-            println("Ingrese nombre del pastel a actualizar:")
-            return readLine().orEmpty()
-        }
-        fun eliminarPorNombre(): String {
-            println("Ingrese nombre del pastel a eliminar:")
-            return readLine().orEmpty()
+                println("¡Pastel '$nombre' eliminado exitosamente!")
+            } else {
+                println(" El pastel '$nombre' no existe.")
+            }
         }
 
         fun actualizarNombrePasteleria(pasteles: MutableList<Pastel>, nombreViejo: String, nombreNuevo: String) {
@@ -179,9 +106,9 @@ data class Pastel(
 
     }
     override fun toString(): String {
-        return "Nombre: $nombre, Nombre de la Pastelería: $nombrePasteleria, " +
+        return "$nombre, Pastelería: $nombrePasteleria, " +
                 "Fecha de Fabricación: ${dateFormat.format(fechaFabricacion)}, " +
-                "Número de Pasteles: $numPasteles, Apto para Diabéticos: $aptoDiabeticos, " +
+                "Num. de Pasteles: $numPasteles, Apto para Diabéticos: $aptoDiabeticos, " +
                 "Precio: $precio"
     }
 

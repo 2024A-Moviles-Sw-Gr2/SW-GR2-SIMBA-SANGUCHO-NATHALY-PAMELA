@@ -21,71 +21,10 @@ data class Pasteleria(
             if (!pasteleriaArchivo.exists()) pasteleriaArchivo.createNewFile()
         }
 
-        fun ingresarDatosPasteleria(): Pasteleria {
-            println("Ingrese nombre de la pasteleria:")
-            val nombre = readLine().orEmpty()
-
-            val fechaApertura: Date
-            while (true) {
-                println("Ingrese la fecha de apertura (yyyy-MM-dd):")
-                val fechaInput = readLine().orEmpty()
-                fechaApertura = try {
-                    dateFormat.parse(fechaInput)
-                } catch (e: Exception) {
-                    println("El formato de fecha está incorrecto")
-                    continue
-                }
-                break
-            }
-
-            val entregaADomicilio: Boolean
-            while (true) {
-                println("¿Hay entregas a domicilio? (si/no):")
-                val entregaADomicilioInput = readLine().orEmpty().toLowerCase()
-                entregaADomicilio = when (entregaADomicilioInput) {
-                    "si" -> true
-                    "no" -> false
-                    else -> {
-                        println("Por favor, ingrese 'si' o 'no'.")
-                        continue
-                    }
-                }
-                break
-            }
-
-            val numEmpleados: Int
-            while (true) {
-                println("Ingrese número de empleados:")
-                val numEmpleadosInput = readLine().orEmpty()
-                numEmpleados = try {
-                    numEmpleadosInput.toInt()
-                } catch (e: Exception) {
-                    println("Por favor, ingrese un número entero")
-                    continue
-                }
-                break
-            }
-
-            val ingresos: Double
-            while (true) {
-                println("Ingrese los ingresos:")
-                val ingresosInput = readLine().orEmpty().replace(',', '.')
-                ingresos = try {
-                    ingresosInput.toDouble()
-                } catch (e: Exception) {
-                    println("Por favor, ingrese un número decimal")
-                    continue
-                }
-                break
-            }
-
-            return Pasteleria(nombre, fechaApertura, entregaADomicilio, numEmpleados, ingresos)
-        }
-
         fun crearPasteleria(pasteleria: Pasteleria) {
             pasteleriaArchivo.appendText("${pasteleria.nombrePasteleria},${dateFormat.format(pasteleria.fechaApertura)}," +
                     "${pasteleria.entregaADomicilio},${pasteleria.numEmpleados},${pasteleria.ingresos}\n")
-            println("Pastelería creado exitosamente")
+            println("Pastelería creada exitosamente")
         }
 
         fun leerPasteleria(): List<Pasteleria> {
@@ -109,13 +48,10 @@ data class Pasteleria(
                     null
                 }
             }
-
             val pasteles = Pastel.leerPasteles()
-
             pastelerias.forEach { pasteleria ->
                 pasteleria.pasteles.addAll(pasteles.filter { it.nombrePasteleria == pasteleria.nombrePasteleria })
             }
-
             return pastelerias
         }
 
@@ -150,35 +86,32 @@ data class Pasteleria(
         }
 
         fun eliminarPasteleria(nombre: String) {
-            val pastelerias = leerPasteleria().filterNot { it.nombrePasteleria == nombre }
-            val pastelesEliminados = leerPasteles().filterNot { it.nombrePasteleria == nombre }
+            val pastelerias = leerPasteleria()
+            val pasteleriaExiste = pastelerias.any { it.nombrePasteleria == nombre }
 
-            pasteleriaArchivo.writeText(pastelerias.joinToString("\n") {
-                "${it.nombrePasteleria},${dateFormat.format(it.fechaApertura)}," +
-                        "${it.entregaADomicilio},${it.numEmpleados},${it.ingresos}"
-            })
+            if (pasteleriaExiste) {
+                val pasteleriasActualizadas = pastelerias.filterNot { it.nombrePasteleria == nombre }
+                val pastelesEliminados = leerPasteles().filterNot { it.nombrePasteleria == nombre }
 
-            pastelesArchivo.writeText(pastelesEliminados.joinToString("\n") {
-                "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
-                        "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
-            })
+                pasteleriaArchivo.writeText(pasteleriasActualizadas.joinToString("\n") {
+                    "${it.nombrePasteleria},${dateFormat.format(it.fechaApertura)}," +
+                            "${it.entregaADomicilio},${it.numEmpleados},${it.ingresos}"
+                })
 
-            println("¡Pastelería '$nombre' eliminada exitosamente junto con sus pasteles!")
-        }
+                pastelesArchivo.writeText(pastelesEliminados.joinToString("\n") {
+                    "${it.nombre},${it.nombrePasteleria},${it.fechaFabricacion.time}," +
+                            "${it.numPasteles},${it.aptoDiabeticos},${it.precio}"
+                })
 
-        fun modificarPorNombre(): String {
-            println("Ingrese nombre de la pasteleria a actualizar:")
-            return readLine().orEmpty()
-        }
-
-        fun eliminarPorNombre(): String {
-            println("Ingrese nombre de la pasteleria a eliminar:")
-            return readLine().orEmpty()
+                println("¡Pastelería '$nombre' eliminada exitosamente junto con sus pasteles!")
+            } else {
+                println("La pastelería '$nombre' no existe.")
+            }
         }
     }
 
     override fun toString(): String {
-        return "Nombre: $nombrePasteleria, Fecha de Apertura: ${dateFormat.format(fechaApertura)}, " +
+        return "Pasteleria: $nombrePasteleria, Fecha de Apertura: ${dateFormat.format(fechaApertura)}, " +
                 "Entrega a Domicilio: $entregaADomicilio, Num. de Empleados: $numEmpleados, Ingresos: $ingresos"
     }
 }
