@@ -1,3 +1,2 @@
-La Union,2024-12-17,false,1000,34000.0
-Santa Maria Pasteleria,2024-06-12,true,103,3400.0
-Pasteles Pasteleria,2014-12-16,false,2000,23400.0
+La Gran Union,2024-06-13,true,150,6000.0
+La fe,2024-03-14,false,100,5800.0

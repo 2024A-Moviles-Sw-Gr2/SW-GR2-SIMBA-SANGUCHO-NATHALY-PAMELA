@@ -1,3 +1,4 @@
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,6 +21,7 @@ fun main() {
                             Pasteleria.crearPasteleria(nuevaPasteleria)
                         }
                         2 -> {
+                            println("PASTELERIAS NATH")
                             Pasteleria.leerPasteleria().forEach {
                                 println(it)
                             }
@@ -51,6 +53,7 @@ fun main() {
                             Pastel.crearPastel(nuevoPastel, nuevoPastel.nombrePasteleria)
                         }
                         2 -> {
+                            println("PASTELERIAS NATH")
                             Pastel.leerPasteles().forEach {
                                 println(it)
                             }
@@ -71,6 +74,7 @@ fun main() {
                 }
             }
             3 -> {
+                println("PASTELERIAS NATH")
                 Pasteleria.leerPasteleria().forEach { pasteleria ->
                     println(pasteleria)
                     if (pasteleria.pasteles.isEmpty()) {
@@ -94,13 +98,13 @@ fun main() {
 
 fun menuPasteleria(): Int {
     var opc = 0
-    var num = " "
+    var num = ""
 
     num += "PASTELERIAS NATH\n"
     num += "1. AGREGAR PASTELERIA\n"
     num += "2. VER LISTADO DE PASTELERIA\n"
     num += "3. ACTUALIZAR PASTELERIA\n"
-    num += "4. ELIMINAR  PASTELERIA\n"
+    num += "4. ELIMINAR PASTELERIA\n"
     num += "5. REGRESAR\n"
     num += "\n"
     num += "Escoje el numero de opcion que deseas: "
@@ -112,7 +116,7 @@ fun menuPasteleria(): Int {
 
 fun menuPastel(): Int {
     var opc = 0
-    var num = " "
+    var num = ""
 
     num += "PASTELERIAS NATH\n"
     num += "1. AGREGAR PASTEL\n"
@@ -130,7 +134,7 @@ fun menuPastel(): Int {
 
 fun opciones(): Int {
     var opc = 0
-    var num = " "
+    var num = ""
 
     num += "PASTELERIAS NATH\n"
     num += "1. PASTELERIA\n"
@@ -150,17 +154,17 @@ fun ingresarDatosPasteleria(): Pasteleria {
     println("Ingrese nombre de la pasteleria:")
     val nombre = readLine().orEmpty()
 
-    val fechaApertura: Date
+    var fechaApertura: Date
     while (true) {
         println("Ingrese la fecha de apertura (yyyy-MM-dd):")
         val fechaInput = readLine().orEmpty()
-        fechaApertura = try {
-            dateFormat.parse(fechaInput)
-        } catch (e: Exception) {
-            println("El formato de fecha está incorrecto")
-            continue
+        try {
+            dateFormat.isLenient = false
+            fechaApertura = dateFormat.parse(fechaInput)
+            break
+        } catch (e: ParseException) {
+            println("El formato de fecha está incorrecto. Por favor, ingrese la fecha en formato yyyy-MM-dd.")
         }
-        break
     }
 
     val entregaADomicilio: Boolean
@@ -208,44 +212,35 @@ fun ingresarDatosPasteleria(): Pasteleria {
 }
 
 fun ingresarDatosPastel(): Pastel {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+
     println("Ingrese el nombre del pastel:")
     val nombre = readLine().orEmpty()
 
     println("Ingrese nombre de la pasteleria:")
     val nombrePasteleria = readLine().orEmpty()
 
-    val fechaFabricacion: Date
+    var fechaFabricacion: Date
     while (true) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         println("Ingrese la fecha de fabricacion (yyyy-MM-dd):")
         val fechaInput = readLine().orEmpty()
-        fechaFabricacion = try {
-            dateFormat.parse(fechaInput)
-        } catch (e: Exception) {
-            println("Ingreso un formato incorrecto")
-            continue
+        try {
+            dateFormat.isLenient = false
+            fechaFabricacion = dateFormat.parse(fechaInput)
+            break
+        } catch (e: ParseException) {
+            println("Formato de fecha incorrecto.")
         }
-        break
     }
 
-    val numPasteles: Int
-    while (true) {
-        println("Cantidad de pasteles hechos:")
-        val numPastelesInput = readLine().orEmpty()
-        numPasteles = try {
-            numPastelesInput.toInt()
-        } catch (e: Exception) {
-            println("Por favor, ingrese un numero entero")
-            continue
-        }
-        break
-    }
+    println("Ingrese el número de pasteles:")
+    val numPasteles = readLine()?.toIntOrNull() ?: 0
 
     val aptoDiabeticos: Boolean
     while (true) {
-        println("¿Es apto para diabéticos? (si/no):")
-        val aptoDiabeticosInput = readLine().orEmpty().toLowerCase()
-        aptoDiabeticos = when (aptoDiabeticosInput) {
+        println("¿Es Apto para Diabeticos? (si/no):")
+        val entregaADomicilioInput = readLine().orEmpty().toLowerCase()
+        aptoDiabeticos = when (entregaADomicilioInput) {
             "si" -> true
             "no" -> false
             else -> {
@@ -258,14 +253,15 @@ fun ingresarDatosPastel(): Pastel {
 
     val precio: Double
     while (true) {
-        println("Ingrese el precio:")
-        val precioInput = readLine()
-        if (precioInput != null && precioInput.matches(Regex("-?\\d+(\\.\\d+)?"))) {
-            precio = precioInput.toDouble()
-            break
-        } else {
-            println("Por favor, ingrese un numero decimal")
+        println("Ingrese el precio del pastel:")
+        val ingresosInput = readLine().orEmpty().replace(',', '.')
+        precio = try {
+            ingresosInput.toDouble()
+        } catch (e: Exception) {
+            println("Por favor, ingrese un número decimal")
+            continue
         }
+        break
     }
 
     return Pastel(nombre, nombrePasteleria, fechaFabricacion, numPasteles, aptoDiabeticos, precio)

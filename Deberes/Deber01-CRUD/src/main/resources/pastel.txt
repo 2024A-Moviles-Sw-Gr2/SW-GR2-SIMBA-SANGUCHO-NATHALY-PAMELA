@@ -1,2 +1,2 @@
-Pastel de Mora,La Union,1718514000000,10,true,5.0
-Flan,La Union,1718686800000,30,false,1.5
+Pastel de Frutilla,Las casas,1719118800000,60,false,3.5
+Pastel de Mora,Santa Ana,1719205200000,40,false,2.5

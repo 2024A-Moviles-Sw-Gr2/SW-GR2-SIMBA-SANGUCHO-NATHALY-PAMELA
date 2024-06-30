@@ -13,51 +13,60 @@ data class Pastel(
     var precio: Double
 ) {
     companion object {
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val pastelesArchivo = File("src/main/resources/pastel.txt")
 
         init {
             if (!pastelesArchivo.exists()) pastelesArchivo.createNewFile()
         }
 
+        fun crearPastel(pastel: Pastel, nombrePasteleria: String) {
+            val pastelerias = Pasteleria.leerPasteleria().toMutableList()
+            val pasteleria = pastelerias.find { it.nombrePasteleria == nombrePasteleria }
+
+            if (pasteleria != null) {
+                val pasteles = leerPasteles().toMutableList()
+                pasteles.add(pastel)
+                guardarPasteles(pasteles)
+
+                pasteleria.pasteles.add(pastel)
+                Pasteleria.actualizarEnPasteles(nombrePasteleria, pasteleria.pasteles)
+                println("Pastel creado exitosamente")
+            } else {
+                println("No existe la pastelería '$nombrePasteleria'.")
+            }
+        }
+
         fun leerPasteles(): List<Pastel> {
             return pastelesArchivo.readLines().mapNotNull { line ->
-                val info = line.split(",")
+                val info = line.split(",").map { it.trim() }
                 if (info.size == 6) {
                     try {
-                        Pastel(
-                            info[0],
-                            info[1],
-                            Date(info[2].toLong()),
-                            info[3].toInt(),
-                            info[4].toBoolean(),
-                            info[5].replace(',', '.').toDouble()
-                        )
+                        val nombre = info[0]
+                        val nombrePasteleria = info[1]
+                        val fechaFabricacion = Date(info[2].toLong())
+                        val numPasteles = info[3].toInt()
+                        val aptoDiabeticos = info[4].toBoolean()
+                        val precio = info[5].replace(',', '.').toDouble()
+
+                        Pastel(nombre, nombrePasteleria, fechaFabricacion, numPasteles, aptoDiabeticos, precio)
                     } catch (e: Exception) {
-                        println("Ha ocurrido un error al ingresar los datos: $line. Error: ${e.message}")
+                        println("Ha ocurrido un error")
                         null
                     }
                 } else {
-                    println("Línea en blanco: $line")
+                    println("Línea con formato incorrecto: $line")
                     null
                 }
             }
         }
 
-        fun crearPastel(pastel: Pastel, nombrePasteleria: String) {
-            val pastelerias = leerPasteleria().toMutableList()
-            val pasteleria = pastelerias.find { it.nombrePasteleria == nombrePasteleria }
-
-            if (pasteleria != null) {
+        fun guardarPasteles(pasteles: List<Pastel>) {
+            pastelesArchivo.writeText("")
+            pasteles.forEach { pastel ->
                 val linea = "${pastel.nombre},${pastel.nombrePasteleria},${pastel.fechaFabricacion.time}," +
-                        "${pastel.numPasteles},${pastel.aptoDiabeticos},${pastel.precio}\n"
+                        "${pastel.numPasteles},${pastel.aptoDiabeticos},${pastel.precio}  \n"
                 pastelesArchivo.appendText(linea)
-
-                pasteleria.pasteles.add(pastel)
-                actualizarEnPasteles(nombrePasteleria, pasteleria.pasteles)
-                println("Pastel creado exitosamente")
-            } else {
-                println("No existe la pasteleria '$nombrePasteleria'.")
             }
         }
 
@@ -105,6 +114,7 @@ data class Pastel(
         }
 
     }
+
     override fun toString(): String {
         return "$nombre, Pastelería: $nombrePasteleria, " +
                 "Fecha de Fabricación: ${dateFormat.format(fechaFabricacion)}, " +

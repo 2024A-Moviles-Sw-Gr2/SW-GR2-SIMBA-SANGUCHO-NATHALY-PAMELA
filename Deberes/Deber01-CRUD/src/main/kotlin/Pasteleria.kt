@@ -22,39 +22,57 @@ data class Pasteleria(
         }
 
         fun crearPasteleria(pasteleria: Pasteleria) {
-            pasteleriaArchivo.appendText("${pasteleria.nombrePasteleria},${dateFormat.format(pasteleria.fechaApertura)}," +
-                    "${pasteleria.entregaADomicilio},${pasteleria.numEmpleados},${pasteleria.ingresos}\n")
+            val pastelerias = leerPasteleria().toMutableList()
+            pastelerias.add(pasteleria)
+            guardarPastelerias(pastelerias)
             println("Pastelería creada exitosamente")
         }
 
         fun leerPasteleria(): List<Pasteleria> {
-            val pastelerias = pasteleriaArchivo.readLines().filter { it.isNotBlank() }.mapNotNull { line ->
-                val info = line.split(",")
-                if (info.size >= 5) {
+            val pastelerias = mutableListOf<Pasteleria>()
+            pasteleriaArchivo.readLines().forEach { line ->
+                if (line.isNotBlank()) {
                     try {
-                        Pasteleria(
-                            info[0],
-                            dateFormat.parse(info[1]),
-                            info[2].toBoolean(),
-                            info[3].toInt(),
-                            info[4].toDouble()
-                        )
+                        val info = line.split(",")
+                        if (info.size >= 5) {
+                            val nombrePasteleria = info[0]
+                            val fechaApertura = dateFormat.parse(info[1])
+                            val entregaADomicilio = info[2].toBoolean()
+                            val numEmpleados = info[3].toInt()
+                            val ingresos = info[4].toDouble()
+
+                            val nuevaPasteleria = Pasteleria(
+                                nombrePasteleria,
+                                fechaApertura,
+                                entregaADomicilio,
+                                numEmpleados,
+                                ingresos
+                            )
+
+                            val pasteles = Pastel.leerPasteles().filter { it.nombrePasteleria == nombrePasteleria }
+                            nuevaPasteleria.pasteles.addAll(pasteles)
+
+                            pastelerias.add(nuevaPasteleria)
+                        } else {
+                            println("Línea con formato incorrecto")
+                        }
                     } catch (e: Exception) {
-                        println("Error al procesar la línea: $line, error: ${e.message}")
-                        null
+                        println("Error al procesar la línea")
                     }
-                } else {
-                    println("Línea con formato incorrecto: $line")
-                    null
                 }
-            }
-            val pasteles = Pastel.leerPasteles()
-            pastelerias.forEach { pasteleria ->
-                pasteleria.pasteles.addAll(pasteles.filter { it.nombrePasteleria == pasteleria.nombrePasteleria })
             }
             return pastelerias
         }
 
+        fun guardarPastelerias(pastelerias: List<Pasteleria>) {
+            pasteleriaArchivo.writeText("")
+            pastelerias.forEach { pasteleria ->
+                pasteleriaArchivo.appendText(
+                    "${pasteleria.nombrePasteleria},${dateFormat.format(pasteleria.fechaApertura)}," +
+                            "${pasteleria.entregaADomicilio},${pasteleria.numEmpleados},${pasteleria.ingresos} \n"
+                )
+            }
+        }
         fun actualizarPasteleria(nombrePasteleria: String, nuevoNombrePasteleria: Pasteleria) {
             val pastelerias = leerPasteleria().toMutableList()
             val index = pastelerias.indexOfFirst { it.nombrePasteleria == nombrePasteleria }
@@ -91,7 +109,7 @@ data class Pasteleria(
 
             if (pasteleriaExiste) {
                 val pasteleriasActualizadas = pastelerias.filterNot { it.nombrePasteleria == nombre }
-                val pastelesEliminados = leerPasteles().filterNot { it.nombrePasteleria == nombre }
+                val pastelesEliminados = Pastel.leerPasteles().filterNot { it.nombrePasteleria == nombre }
 
                 pasteleriaArchivo.writeText(pasteleriasActualizadas.joinToString("\n") {
                     "${it.nombrePasteleria},${dateFormat.format(it.fechaApertura)}," +
