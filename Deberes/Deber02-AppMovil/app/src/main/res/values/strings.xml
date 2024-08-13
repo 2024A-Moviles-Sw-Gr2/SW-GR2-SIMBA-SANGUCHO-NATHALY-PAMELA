@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Deber02</string>
+    <string name="saludo">Listado de opciones</string>
+    <string-array name="string_array_opciones">
+        <item> Lunes</item>
+        <item> Martes</item>
+        <item> Miercoles</item>
+    </string-array>
+</resources>

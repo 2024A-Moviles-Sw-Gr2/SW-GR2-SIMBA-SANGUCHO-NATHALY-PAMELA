@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">2024SWGR2SNP</string>
-    <string name="saludo">Hello World</string>
+    <string name="saludo">Listado de opciones</string>
     <string-array name="string_array_opciones">
         <item> Lunes</item>
         <item> Martes</item>
         <item> Miercoles</item>
     </string-array>
+    <string name="title_activity_google_maps_inicio">GoogleMapsInicio</string>
 </resources>

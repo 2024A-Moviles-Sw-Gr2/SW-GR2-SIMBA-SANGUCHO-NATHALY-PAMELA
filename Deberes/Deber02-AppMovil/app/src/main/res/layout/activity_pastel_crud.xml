@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_crud_pasteles"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PastelCRUD">
+
+    <TextView
+        android:id="@+id/tv_CUPastel"
+        android:layout_width="296dp"
+        android:layout_height="60dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="Pastel"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07" />
+
+    <EditText
+        android:id="@+id/input_nombre_pastel"
+        android:layout_width="291dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="48dp"
+        android:ems="10"
+        android:hint="Ingrese el nombre del pastel"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/tv_CUPastel"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="@+id/tv_CUPastel"
+        app:layout_constraintTop_toBottomOf="@+id/tv_CUPastel" />
+
+    <EditText
+        android:id="@+id/input_fecha_elab"
+        android:layout_width="291dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="244dp"
+        android:ems="10"
+        android:hint="Ingrese la fecha de elaboracion"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/tv_CUPastel"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_CUPastel"
+        app:layout_constraintTop_toBottomOf="@+id/tv_CUPastel" />
+
+    <EditText
+        android:id="@+id/input_precio"
+        android:layout_width="291dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="140dp"
+        android:ems="10"
+        android:hint="Ingrese el precio"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/tv_CUPastel"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="@+id/tv_CUPastel"
+        app:layout_constraintTop_toBottomOf="@+id/tv_CUPastel" />
+
+    <Button
+        android:id="@+id/btn_crear_pastel"
+        android:layout_width="160dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="452dp"
+        android:text="Crear"
+        app:layout_constraintEnd_toEndOf="@+id/tv_CUPastel"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/tv_CUPastel"
+        app:layout_constraintTop_toBottomOf="@+id/tv_CUPastel" />
+
+    <Button
+        android:id="@+id/btn_act_pastel"
+        android:layout_width="172dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="516dp"
+        android:text="Actualizar"
+        app:layout_constraintEnd_toEndOf="@+id/tv_CUPastel"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/tv_CUPastel"
+        app:layout_constraintTop_toBottomOf="@+id/tv_CUPastel" />
+
+    <Switch
+        android:id="@+id/sw_diabeticos"
+        android:layout_width="258dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="¿Es para Diabeticos?"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_crear_pastel"
+        app:layout_constraintEnd_toEndOf="@+id/input_fecha_elab"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="@+id/input_fecha_elab"
+        app:layout_constraintTop_toBottomOf="@+id/input_fecha_elab"
+        app:layout_constraintVertical_bias="0.214" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
