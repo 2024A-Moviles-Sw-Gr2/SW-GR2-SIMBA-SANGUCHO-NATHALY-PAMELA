@@ -13,7 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@android:color/white">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -43,9 +44,9 @@
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_view"
                     android:layout_width="246dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="#eef3f7"
+                    android:background="@drawable/rounded_search_view_background"
                     android:theme="@style/SearchViewStyle"
                     app:iconifiedByDefault="false"
                     app:queryBackground="@null"
@@ -68,6 +69,7 @@
             android:layout_height="match_parent"
             android:id="@+id/frame_layout"/>
     </LinearLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -12,14 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_mis_publ"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="15dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_menciones"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginVertical="3dp"
+        android:layout_marginVertical="8dp"
         android:layout_marginEnd="102dp"
         android:background="@drawable/button_border"
         android:text="Menciones"
@@ -32,7 +32,7 @@
         android:layout_width="130dp"
         android:layout_height="30dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginVertical="3dp"
+        android:layout_marginVertical="8dp"
         android:layout_marginEnd="195dp"
         android:background="@drawable/button_border"
         android:text="Mis Publicaciones"
@@ -45,7 +45,7 @@
         android:layout_width="67dp"
         android:layout_height="28dp"
         android:layout_alignParentStart="true"
-        android:layout_marginVertical="3dp"
+        android:layout_marginVertical="8dp"
         android:layout_marginStart="13dp"
         android:layout_marginEnd="6dp"
         android:layout_toStartOf="@+id/btn_mis_publ"
