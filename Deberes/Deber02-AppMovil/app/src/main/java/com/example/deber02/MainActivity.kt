@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity() {
         botonCrearPasteleria.setOnClickListener {
             irActividad(PasteleriaCRUD::class.java)
         }
+        val botonVerMapa = findViewById<Button>(R.id.btn_ver_mapa)
+        botonVerMapa.setOnClickListener {
+            irActividad(MapaActivity::class.java)
+        }
+
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -64,6 +69,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun abrirActividadConParametros(clase: Class<*>, id: Int) {
+        val intentExplicito = Intent(this, clase)
+        intentExplicito.putExtra("id", id)
+        startActivity(intentExplicito)
+    }
+    fun abrirMapaConParametros(clase: Class<*>, id: Int) {
         val intentExplicito = Intent(this, clase)
         intentExplicito.putExtra("id", id)
         startActivity(intentExplicito)

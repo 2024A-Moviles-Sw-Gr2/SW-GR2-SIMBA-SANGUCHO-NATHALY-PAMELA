@@ -11,6 +11,8 @@ class PasteleriaCRUD : AppCompatActivity() {
         setContentView(R.layout.activity_pasteleria_crud)
         val idPasteleria = intent.getIntExtra("id", 0)
         ingresarDatos(idPasteleria)
+        val latitud = findViewById<EditText>(R.id.input_latitud)
+        val longitud = findViewById<EditText>(R.id.input_longitud)
 
         val botonCrearBDD = findViewById<Button>(R.id.btn_crear_bdd)
         botonCrearBDD
@@ -23,7 +25,9 @@ class PasteleriaCRUD : AppCompatActivity() {
                     nombrePasteleria.text.toString(),
                     nombreDueño.text.toString(),
                     numEmpleados.text.toString().toInt(),
-                    ingresos.text.toString().toDouble()
+                    ingresos.text.toString().toDouble(),
+                    latitud.text.toString().toDoubleOrNull(),
+                    longitud.text.toString().toDoubleOrNull()
                 )
                 finish()
             }
@@ -42,6 +46,8 @@ class PasteleriaCRUD : AppCompatActivity() {
                     nombreDueño.text.toString(),
                     numEmpleados.text.toString().toInt(),
                     ingresos.text.toString().toDouble(),
+                    latitud.text.toString().toDoubleOrNull(),
+                    longitud.text.toString().toDoubleOrNull(),
                     id
                 )
                 finish()
@@ -68,10 +74,15 @@ class PasteleriaCRUD : AppCompatActivity() {
             val nombreDueño = findViewById<EditText>(R.id.input_nom_dueño)
             val numEmpleados = findViewById<EditText>(R.id.input_num_Empleados)
             val ingresos = findViewById<EditText>(R.id.input_ingresos)
+            val latitud = findViewById<EditText>(R.id.input_latitud)
+            val longitud = findViewById<EditText>(R.id.input_longitud)
             nombrePasteleria.setText(pasteleriaEncontrada.nombrePasteleria)
             nombreDueño.setText(pasteleriaEncontrada.nombreDueño)
             numEmpleados.setText(pasteleriaEncontrada.numEmpleados.toString())
             ingresos.setText(pasteleriaEncontrada.ingresos.toString())
+            latitud.setText(pasteleriaEncontrada.latitud.toString())
+            longitud.setText(pasteleriaEncontrada.longitud.toString())
+
         }
     }
 }

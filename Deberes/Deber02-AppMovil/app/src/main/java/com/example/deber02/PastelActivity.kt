@@ -79,7 +79,12 @@ class PastelActivity : AppCompatActivity() {
         val pasteles = BaseDeDatos.tablaPasteles!!.obtenerPastelesDePastelerias(idPasteleria)
         val pasteleriaEncontrado = BaseDeDatos.tablaPastelerias!!.obtenerIDPasteleria(idPasteleria)
         val nombrePasteleria = findViewById<TextView>(R.id.tv_pastelerias)
-        nombrePasteleria.text = pasteleriaEncontrado.nombrePasteleria
+        if (pasteleriaEncontrado != null) {
+            nombrePasteleria.text = pasteleriaEncontrado.nombrePasteleria
+        } else {
+            // Maneja el caso cuando pasteleriaEncontrado es null
+            nombrePasteleria.text = "Pastelería no encontrada"
+        }
         listView = findViewById<ListView>(R.id.lv_list_pasteles)
         val adaptador = ArrayAdapter(
             this,

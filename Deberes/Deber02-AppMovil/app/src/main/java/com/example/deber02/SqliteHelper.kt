@@ -24,7 +24,9 @@ class SqliteHelper(
                     nombrePasteleria VARCHAR(50),
                     nombreDueño VARCHAR(50),
                     numEmpleados INTEGER,
-                    ingresos DOUBLE
+                    ingresos DOUBLE,
+                    latitud DOUBLE,     
+                    longitud DOUBLE      
                 )
             """.trimIndent()
         db?.execSQL(crearTablaPasteleria)
@@ -44,11 +46,11 @@ class SqliteHelper(
         db?.execSQL(crearTablaPastel)
     }
 
-    override fun onUpgrade(
-        db: SQLiteDatabase?,
-        oldVersion: Int,
-        newVersion: Int
-    ) {
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 6) {
+            db?.execSQL("ALTER TABLE PASTELERIA ADD COLUMN latitud DOUBLE")
+            db?.execSQL("ALTER TABLE PASTELERIA ADD COLUMN longitud DOUBLE")
+        }
     }
 
     /*
@@ -58,8 +60,9 @@ class SqliteHelper(
         nombrePasteleria: String,
         nombreDueño: String,
         numEmpleados: Int,
-        ingresos: Double
-
+        ingresos: Double,
+        latitud: Double?,
+        longitud: Double?
     ): Boolean {
         val baseDatosEscritura = writableDatabase
         val datosAGuardar = ContentValues()
@@ -67,14 +70,12 @@ class SqliteHelper(
         datosAGuardar.put("nombreDueño", nombreDueño)
         datosAGuardar.put("numEmpleados", numEmpleados)
         datosAGuardar.put("ingresos", ingresos)
+        datosAGuardar.put("latitud", latitud)
+        datosAGuardar.put("longitud", longitud)
         val resultadoGuardar = baseDatosEscritura
-            .insert(
-                "PASTELERIA", // nombre tabla
-                null,
-                datosAGuardar, // valores
-            )
+            .insert("PASTELERIA", null, datosAGuardar)
         baseDatosEscritura.close()
-        return if (resultadoGuardar.toInt() === -1) false else true
+        return resultadoGuardar != -1L
     }
 
     fun eliminarPasteleria(id: Int): Boolean {
@@ -90,13 +91,14 @@ class SqliteHelper(
         return if (resultadoEliminacion.toInt() == -1) false else true
     }
 
-
     fun actualizarPasteleria(
         nombrePasteleria: String,
         nombreDueño: String,
         numEmpleados: Int,
         ingresos: Double,
-        id: Int,
+        latitud: Double?,
+        longitud: Double?,
+        id: Int
     ): Boolean {
         val conexionEscritura = writableDatabase
         val datosAActualizar = ContentValues()
@@ -104,20 +106,14 @@ class SqliteHelper(
         datosAActualizar.put("nombreDueño", nombreDueño)
         datosAActualizar.put("numEmpleados", numEmpleados)
         datosAActualizar.put("ingresos", ingresos)
-        // where ID = ?
+        datosAActualizar.put("latitud", latitud)
+        datosAActualizar.put("longitud", longitud)
         val parametrosConsultaActualizar = arrayOf(id.toString())
         val resultadoActualizacion = conexionEscritura
-            .update(
-                "PASTELERIA", // Nombre tabla
-                datosAActualizar, // Valores
-                "id=?", // Consulta Where
-                parametrosConsultaActualizar
-            )
+            .update("PASTELERIA", datosAActualizar, "id=?", parametrosConsultaActualizar)
         conexionEscritura.close()
-        return if (resultadoActualizacion.toInt() == -1) false else true
+        return resultadoActualizacion != -1
     }
-
-
     fun obtenerIDPasteleria(id: Int): Pasteleria {
         val baseDatosLectura = readableDatabase
         val scriptConsultaLectura = """
@@ -129,7 +125,7 @@ class SqliteHelper(
             parametrosConsultaLectura,
         )
         val existePasteleria = resultadoConsultaLectura.moveToFirst()
-        val PasteleriaEncontrada = Pasteleria(0, "", "", 0, 0.0)
+        val PasteleriaEncontrada = Pasteleria(0, "", "", 0, 0.0,0.0,0.0)
         val arreglo = arrayListOf<Pasteleria>()
         if (existePasteleria) {
             do {
@@ -138,12 +134,16 @@ class SqliteHelper(
                 val nombreDueño = resultadoConsultaLectura.getString(2)
                 val numEmpleados = resultadoConsultaLectura.getInt(3)
                 val ingresos = resultadoConsultaLectura.getDouble(4)
+                val latitud = resultadoConsultaLectura.getDouble(5)
+                val longitud= resultadoConsultaLectura.getDouble(6)
                 if (id != null) {
                     PasteleriaEncontrada.id = id
                     PasteleriaEncontrada.nombrePasteleria = nombrePasteleria
                     PasteleriaEncontrada.nombreDueño = nombreDueño
                     PasteleriaEncontrada.numEmpleados = numEmpleados
                     PasteleriaEncontrada.ingresos = ingresos
+                    PasteleriaEncontrada.latitud=latitud
+                    PasteleriaEncontrada.longitud=longitud
                 }
             } while (resultadoConsultaLectura.moveToNext())
         }
@@ -168,13 +168,17 @@ class SqliteHelper(
                 val nombreDueño = resultadoConsultaLectura.getString(2)
                 val numEmpleados = resultadoConsultaLectura.getInt(3)
                 val ingresos = resultadoConsultaLectura.getDouble(4)
+                val latitud = resultadoConsultaLectura.getDouble(5)
+                val longitud = resultadoConsultaLectura.getDouble(6)
                 arrayPastelerias.add(
                     Pasteleria(
                         id,
                         nombrePasteleria,
                         nombreDueño,
                         numEmpleados,
-                        ingresos
+                        ingresos,
+                        latitud,
+                        longitud
                     )
                 )
             } while (resultadoConsultaLectura.moveToNext())

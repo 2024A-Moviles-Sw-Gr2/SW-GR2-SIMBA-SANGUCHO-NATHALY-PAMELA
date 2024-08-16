@@ -43,4 +43,14 @@
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <Button
+        android:id="@+id/btn_ver_mapa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ubicaciones de Pastelerias"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lv_list_pastelerias"
+        app:layout_constraintStart_toStartOf="@+id/lv_list_pastelerias"
+        app:layout_constraintTop_toBottomOf="@+id/lv_list_pastelerias" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
