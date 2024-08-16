@@ -22,66 +22,6 @@
             android:name=".PasteleriaCRUD"
             android:exported="false" />
         <activity
-            android:name=".PasteleriaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CRUDPaises"
-            android:exported="false" />
-        <activity
-            android:name=".PastelCRUD"
-            android:exported="false" />
-        <activity
-            android:name=".PastelActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PasteleriaCRUD"
-            android:exported="false" />
-        <activity
-            android:name=".PastelesVista"
-            android:exported="false" />
-        <activity
-            android:name=".Pastel_CRUD"
-            android:exported="false" />
-        <activity
-            android:name=".Pasteleria_CRUD"
-            android:exported="false" />
-        <activity
-            android:name=".EditarJugador"
-            android:exported="false" />
-        <activity
-            android:name=".EditarEquipo"
-            android:exported="false" />
-        <activity
-            android:name=".CrearEquipo"
-            android:exported="false" />
-        <activity
-            android:name=".CrearJugador"
-            android:exported="false" />
-        <activity
-            android:name=".VistaEquipo"
-            android:exported="false" />
-        <activity
-            android:name=".VistaJugador"
-            android:exported="false" />
-        <activity
-            android:name=".CrearFruta"
-            android:exported="false" />
-        <activity
-            android:name=".EditarFruta"
-            android:exported="false" />
-        <activity
-            android:name=".ListaFrutas"
-            android:exported="false" />
-        <activity
-            android:name=".EditarTienda"
-            android:exported="false" />
-        <activity
-            android:name=".Tienda"
-            android:exported="false" />
-        <activity
-            android:name=".NuevaTienda"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
