@@ -19,4 +19,9 @@ class ResumenAdapter(private var cuentas: MutableList<Cuenta>):RecyclerView.Adap
         val item = cuentas[position]
         holder.render(item)
     }
+
+    fun updateCuentas(newCuentas: MutableList<Cuenta>) {
+        cuentas = newCuentas
+        notifyDataSetChanged()
+    }
 }

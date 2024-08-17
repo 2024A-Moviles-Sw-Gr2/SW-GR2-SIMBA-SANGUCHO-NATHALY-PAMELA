@@ -64,4 +64,14 @@ class InicioFragment : Fragment() {
                 }
             }
     }
+
+    override fun onResume() {
+        super.onResume()
+        refreshCuentas()
+    }
+
+    private fun refreshCuentas() {
+        cuentas = sqliteHelper.obtenerCuentas()
+        adapter.updateCuentas(cuentas)
+    }
 }

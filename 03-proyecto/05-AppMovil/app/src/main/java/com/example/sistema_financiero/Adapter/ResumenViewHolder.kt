@@ -13,8 +13,6 @@ import com.example.sistema_financiero.EgresoActivity
 import com.example.sistema_financiero.IngresoActivity
 import com.example.sistema_financiero.R
 
-
-
 class ResumenViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     // Referencias a las vistas dentro del item layout
