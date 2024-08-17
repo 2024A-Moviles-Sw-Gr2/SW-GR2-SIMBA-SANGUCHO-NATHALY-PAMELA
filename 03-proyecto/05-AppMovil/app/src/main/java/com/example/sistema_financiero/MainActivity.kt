@@ -8,10 +8,15 @@ import com.example.sistema_financiero.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Set the default selected item
+        binding.bottomNavigationView.selectedItemId = R.id.inicio
+
         replaceFragment(InicioFragment())
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -21,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
 
-                R.id.inicio-> {
+                R.id.inicio -> {
                     replaceFragment(InicioFragment())
                 }
 
@@ -32,10 +37,11 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
-        private fun replaceFragment(fragment: Fragment) {
-            val fragmentManager = supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentLayout, fragment)
-            fragmentTransaction.commit()
-        }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragmentLayout, fragment)
+        fragmentTransaction.commit()
+    }
 }

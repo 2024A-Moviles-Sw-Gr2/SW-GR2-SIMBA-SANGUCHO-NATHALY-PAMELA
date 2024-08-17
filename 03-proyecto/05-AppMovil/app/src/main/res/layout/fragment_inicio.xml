@@ -31,7 +31,7 @@
             android:layout_height="35dp"
             android:layout_alignBottom="@id/ResumenText"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="7dp"
             android:background="?attr/selectableItemBackground"
             android:src="@drawable/baseline_settings_24" />
