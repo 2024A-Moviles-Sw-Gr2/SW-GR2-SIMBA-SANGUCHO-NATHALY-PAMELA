@@ -41,6 +41,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resumen_recyclerView"
         android:layout_width="match_parent"
+        android:paddingTop="20dp"
+        android:background="@drawable/fondo_contenido"
         android:layout_height="615dp"
         android:layout_below="@id/ResumenText"
         android:layout_gravity="bottom"

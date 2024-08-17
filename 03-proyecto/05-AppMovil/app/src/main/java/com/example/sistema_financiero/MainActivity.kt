@@ -1,5 +1,6 @@
 package com.example.sistema_financiero
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,7 +17,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.salir -> {
-                    replaceFragment(SalirFragment())
+                    val intent = Intent(this, SalirApp::class.java)
+                    startActivity(intent)
                 }
 
                 R.id.inicio-> {
