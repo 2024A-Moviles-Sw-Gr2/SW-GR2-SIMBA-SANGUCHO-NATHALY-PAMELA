@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import androidx.fragment.app.Fragment
+import java.text.NumberFormat
+import java.util.Locale
 
 class CuentaCRUD : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,7 @@ class CuentaCRUD : AppCompatActivity() {
         }
 
         val nombreCuenta = findViewById<EditText>(R.id.CrudCuenta_nombreCuenta)
-        val montoTextView = findViewById<TextView>(R.id.CrudCuenta_monto)
+        val montoEditText = findViewById<EditText>(R.id.CrudCuenta_monto)
 
         val cuentaSelecionada = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("cuentaSelecionada", Cuenta::class.java)
@@ -30,11 +30,13 @@ class CuentaCRUD : AppCompatActivity() {
         }
 
         if (cuentaSelecionada == null) {
+            // Crear nueva cuenta
             val btnCrearCuenta = findViewById<Button>(R.id.confirmarCrudCuenta)
             btnCrearCuenta.setOnClickListener {
+                val monto = montoEditText.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
                 val nuevaCuenta = BaseDeDatos.tablaCuentas!!.crearCuenta(
                     nombreCuenta.text.toString(),
-                    montoTextView.text.toString().toDoubleOrNull() ?: 0.0
+                    monto
                 )
                 val resultIntent = Intent()
                 resultIntent.putExtra("cuentaCreada", nuevaCuenta)
@@ -42,13 +44,17 @@ class CuentaCRUD : AppCompatActivity() {
                 finish()
             }
         } else {
+            // Actualizar cuenta existente
             nombreCuenta.setText(cuentaSelecionada.nombreCuenta)
-            montoTextView.text = String.format("$ %.2f", cuentaSelecionada.montoInicial ?: 0.0)
+            val numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
+            montoEditText.setText(numberFormat.format(cuentaSelecionada.montoInicial).replace(numberFormat.currency.symbol, ""))
+
             val btnActualizarCuenta = findViewById<Button>(R.id.confirmarCrudCuenta)
             btnActualizarCuenta.setOnClickListener {
+                val monto = montoEditText.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
                 val cuentaActualizada = BaseDeDatos.tablaCuentas?.actualizarCuenta(
                     nombreCuenta.text.toString(),
-                    cuentaSelecionada.montoInicial ?: 0.0,
+                    monto,
                     cuentaSelecionada.id
                 )
                 val resultIntent = Intent()

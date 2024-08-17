@@ -41,11 +41,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resumen_recyclerView"
         android:layout_width="match_parent"
-        android:paddingTop="20dp"
-        android:background="@drawable/fondo_contenido"
-        android:layout_height="615dp"
+        android:layout_height="573dp"
         android:layout_below="@id/ResumenText"
         android:layout_gravity="bottom"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:background="@drawable/fondo_contenido"
+        android:paddingTop="20dp" />
 
 </FrameLayout>

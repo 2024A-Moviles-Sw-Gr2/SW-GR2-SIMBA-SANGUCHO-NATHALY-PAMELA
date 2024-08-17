@@ -49,7 +49,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout_Egresos"
-        android:layout_width="417dp"
+        android:layout_width="409dp"
         android:layout_height="600dp"
         android:background="@drawable/fondo_contenido"
         android:orientation="vertical"
@@ -115,12 +115,19 @@
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
-        <Spinner
-            android:id="@+id/categoriaSpinner"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/categoriaEgreso"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown" />
+            android:hint="Seleccione categoría">
+
+            <AutoCompleteTextView
+                android:id="@+id/categoriaAuto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

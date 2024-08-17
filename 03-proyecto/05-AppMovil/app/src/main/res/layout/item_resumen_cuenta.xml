@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@drawable/fondo_contenido"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/mainLayout"
@@ -11,9 +12,9 @@
         android:layout_height="179dp"
         android:layout_margin="16dp"
         android:layout_marginTop="72dp"
-        android:background="@color/C_light"
+        android:background="@drawable/rounded_border"
         android:orientation="vertical"
-        android:padding="24dp"
+        android:padding="23dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -67,8 +68,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@drawable/fondo_movimiento"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:layout_marginRight="10dp"
+                android:padding="3dp">
 
                 <ImageButton
                     android:id="@+id/btnIngreso"
@@ -83,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Ingreso"
+                    android:id="@+id/textIngreso"
                     android:textColor="@android:color/black" />
             </LinearLayout>
 
@@ -91,8 +95,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@drawable/fondo_movimiento"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="3dp">
 
                 <ImageButton
                     android:id="@+id/btnEgreso"
@@ -107,6 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Egreso"
+                    android:id="@+id/textEgreso"
                     android:textColor="@android:color/black" />
             </LinearLayout>
         </LinearLayout>
