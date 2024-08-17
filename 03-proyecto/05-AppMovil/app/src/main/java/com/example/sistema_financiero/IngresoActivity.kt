@@ -2,6 +2,7 @@ package com.example.sistema_financiero
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sistema_financiero.databinding.ActivityIngresoBinding
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -10,13 +11,26 @@ import java.util.*
 
 class IngresoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIngresoBinding
-
+    private lateinit var sqliteHelper: SqliteHelper
+    private lateinit var montoTotalTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityIngresoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupUI()
+        montoTotalTextView = findViewById(R.id.montoTotal)
+        sqliteHelper = SqliteHelper(this)
+
+        val cuentaId = intent.getIntExtra("CUENTA_ID", -1)
+
+        if (cuentaId != -1) {
+            val cuenta = sqliteHelper.obtenerIDCuenta(cuentaId) // Obtener la cuenta por ID
+            cuenta?.let {
+                montoTotalTextView.text = "$ ${cuenta.montoInicial}" // Muestra el monto actual
+            }
+
+            setupUI()
+        }
     }
 
     private fun setupUI() {
@@ -47,9 +61,14 @@ class IngresoActivity : AppCompatActivity() {
     }
 
     private fun setupAccountDropdown() {
-        val accounts = listOf("Cuenta 1", "Cuenta 2", "Cuenta 3")
-        val adapter = ArrayAdapter(this, R.layout.list_item, accounts)
+        val accounts = sqliteHelper.obtenerCuentas() // Asegúrate de usar sqliteHelper aquí
+        val accountNames = accounts.map { it.nombreCuenta }
+        val adapter = ArrayAdapter(this, R.layout.list_item, accountNames)
         binding.cuentaDestinoAutoCompleteTextView.setAdapter(adapter)
+    }
+
+    private fun updateSaldoDisponible(saldo: Double) {
+        binding.montoTotal.setText(String.format("%.2f", saldo))
     }
 
     private fun setupButtons() {

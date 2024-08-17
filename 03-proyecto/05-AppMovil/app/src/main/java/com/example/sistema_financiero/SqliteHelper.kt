@@ -25,6 +25,17 @@ class SqliteHelper(
                 )
             """.trimIndent()
         db?.execSQL(crearTablaCuentas)
+        val crearTablaIngresos = """
+            CREATE TABLE INGRESO(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                fechaIngreso TEXT,
+                montoIngreso DOUBLE,
+                cuentaOrigen VARCHAR(50),
+                cuentaDestino VARCHAR(50),
+                FOREIGN KEY(cuentaDestino) REFERENCES CUENTA(nombreCuenta)
+            )
+        """.trimIndent()
+        db?.execSQL(crearTablaIngresos)
     }
 
     override fun onUpgrade(
@@ -114,4 +125,35 @@ class SqliteHelper(
         baseDatosLectura.close()
         return arrayCuentas
     }
+    fun obtenerIDCuenta(id: Int): Cuenta {
+        val baseDatosLectura = readableDatabase
+        val scriptConsultaLectura = """
+            SELECT * FROM CUENTA WHERE ID = ?
+        """.trimIndent()
+        val parametrosConsultaLectura = arrayOf(id.toString())
+        val resultadoConsultaLectura = baseDatosLectura.rawQuery(
+            scriptConsultaLectura,
+            parametrosConsultaLectura,
+        )
+        val existeCuenta = resultadoConsultaLectura.moveToFirst()
+        val CuentaEncontrada = Cuenta(0, "", 0.0)
+        val arreglo = arrayListOf<Cuenta>()
+        if (existeCuenta) {
+            do {
+                val id = resultadoConsultaLectura.getInt(0) // Indice 0
+                val nombreCuenta= resultadoConsultaLectura.getString(1)
+                val montoInicial= resultadoConsultaLectura.getDouble(2)
+                if (id != null) {
+                    CuentaEncontrada.id = id
+                    CuentaEncontrada.nombreCuenta=nombreCuenta
+                    CuentaEncontrada.montoInicial=montoInicial
+                }
+            } while (resultadoConsultaLectura.moveToNext())
+        }
+        resultadoConsultaLectura.close()
+        baseDatosLectura.close()
+        return CuentaEncontrada
+    }
+
+
 }

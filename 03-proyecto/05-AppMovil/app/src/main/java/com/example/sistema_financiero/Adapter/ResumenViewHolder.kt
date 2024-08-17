@@ -35,13 +35,16 @@ class ResumenViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
         btnIngreso.setOnClickListener {
             val context = itemView.context
-            val intent = Intent(context, IngresoActivity::class.java)
+            val intent = Intent(context, IngresoActivity::class.java).apply {
+                putExtra("CUENTA_ID", cuenta.id) // Pasar el ID de la cuenta
+            }
             context.startActivity(intent)
         }
-        tvIngresoText.text = "Ingresos"
+
         btnEgreso.setOnClickListener {
             val context = itemView.context
             val intent = Intent(context, EgresoActivity::class.java)
+            intent.putExtra("CUENTA_ID", cuenta.id) // Pasar ID de cuenta si es necesario
             context.startActivity(intent)
         }
         tvEgresoText.text = "Egresos"
