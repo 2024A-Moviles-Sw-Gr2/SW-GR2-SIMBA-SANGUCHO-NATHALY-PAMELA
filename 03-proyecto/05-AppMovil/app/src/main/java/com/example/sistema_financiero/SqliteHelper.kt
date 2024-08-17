@@ -25,17 +25,6 @@ class SqliteHelper(
                 )
             """.trimIndent()
         db?.execSQL(crearTablaCuentas)
-        val crearTablaIngresos = """
-            CREATE TABLE INGRESO(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                fechaIngreso TEXT,
-                montoIngreso DOUBLE,
-                cuentaOrigen VARCHAR(50),
-                cuentaDestino VARCHAR(50),
-                FOREIGN KEY(cuentaDestino) REFERENCES CUENTA(nombreCuenta)
-            )
-        """.trimIndent()
-        db?.execSQL(crearTablaIngresos)
     }
 
     override fun onUpgrade(
