@@ -79,7 +79,7 @@ class ESqliteHelperEntrenador(
     fun consultarEntrenadorID(id: Int):BEntrenador?{
         val baseDatosLectura = readableDatabase
         val scriptConsultaLectura = """
-            SELECT * FROM ENTRENADIR WHERE ID =?
+            SELECT * FROM ENTRENADOR WHERE ID =?
         """.trimIndent()
         val arregloParametrosConsultaLectura = arrayOf(
             id.toString()

@@ -39,19 +39,19 @@ class SqliteHelper(
     fun crearCuenta(
         nombreCuenta: String,
         montoInicial: Double
-    ): Boolean {
+    ): Cuenta? {
         val baseDatosEscritura = writableDatabase
         val datosAGuardar = ContentValues()
         datosAGuardar.put("nombreCuenta", nombreCuenta)
         datosAGuardar.put("montoInicial", montoInicial)
         val resultadoGuardar = baseDatosEscritura
             .insert(
-                "CUENTA", // nombre tabla
+                "CUENTA",
                 null,
-                datosAGuardar, // valores
+                datosAGuardar,
             )
         baseDatosEscritura.close()
-        return if (resultadoGuardar.toInt() === -1) false else true
+        return if (resultadoGuardar.toInt() == -1) null else Cuenta(resultadoGuardar.toInt(), nombreCuenta, montoInicial)
     }
 
     fun eliminarCuenta(id: Int): Boolean {
@@ -70,23 +70,23 @@ class SqliteHelper(
     fun actualizarCuenta(
         nombreCuenta: String,
         montoInicial: Double,
-        id: Int,
-    ): Boolean {
+        id: Int
+    ): Cuenta? {
         val conexionEscritura = writableDatabase
         val datosAActualizar = ContentValues()
         datosAActualizar.put("nombreCuenta", nombreCuenta)
         datosAActualizar.put("montoInicial", montoInicial)
         val parametrosConsultaActualizar = arrayOf(id.toString())
-        val resultadoActualizacion = conexionEscritura
-            .update(
-                "CUENTA", // Nombre tabla
-                datosAActualizar, // Valores
-                "id=?", // Consulta Where
-                parametrosConsultaActualizar
-            )
+        val resultadoActualizacion = conexionEscritura.update(
+            "CUENTA",
+            datosAActualizar,
+            "id=?",
+            parametrosConsultaActualizar
+        )
         conexionEscritura.close()
-        return if (resultadoActualizacion.toInt() == -1) false else true
+        return if (resultadoActualizacion > 0) Cuenta(id, nombreCuenta, montoInicial) else null
     }
+
     fun obtenerCuentas(): ArrayList<Cuenta> {
         val scriptConsultarPasteleria = "SELECT * FROM CUENTA"
         val baseDatosLectura = readableDatabase
